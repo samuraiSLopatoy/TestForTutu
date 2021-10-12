@@ -12,6 +12,12 @@ class QuoteViewModel: ObservableObject {
 
     @Published var quotes: [Quote] = []
     
+    let viewContext = PersistenceController.shared.container.viewContext
+    
+    init() {
+        fetchQuotes(page: Int.random(in: 0...95), viewContext: viewContext)
+    }
+    
     // MARK: - SAVING JSON TO CORE DATA
     
     func saveQuotes(viewContext: NSManagedObjectContext) {

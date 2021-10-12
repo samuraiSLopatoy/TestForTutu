@@ -49,6 +49,9 @@ struct HomeView: View {
                             }
                         }
                     }
+                    
+                } else if coreDataQuotes.isEmpty && qvm.quotes.isEmpty {
+                    Text("No network")
                 }
                 
             }
@@ -58,17 +61,21 @@ struct HomeView: View {
                                         action: {
                                             do {
                                                 try viewContext.save()
-                                            } catch {
+                                            } catch let error {
                                                 print(error)
                                             }
                                             
-                                            if !coreDataQuotes.isEmpty && qvm.quotes.isEmpty {
+                                            if !coreDataQuotes.isEmpty && !qvm.quotes.isEmpty {
                                                 coreDataQuotes.forEach { quoteEntity in
                                                     viewContext.delete(quoteEntity)
                                                 }
                                                 qvm.quotes.removeAll()
+                                            } else if !coreDataQuotes.isEmpty && qvm.quotes.isEmpty {
+                                                coreDataQuotes.forEach { quoteEntity in
+                                                    viewContext.delete(quoteEntity)
+                                                }
                                             }
-                                            
+
                                             qvm.fetchQuotes(page: Int.random(in: 0...95), viewContext: viewContext)
                                         },
                                         label: { Image(systemName: "arrow.triangle.2.circlepath") }))
