@@ -9,10 +9,15 @@ import SwiftUI
 
 struct DetailView2: View {
     
+    let quoteEntity: QuoteEntity
+    
     var body: some View {
         Image("thinkAboutIt").resizable()
-        Text("Back and refresh").font(.title)
-            .padding()
+        VStack(alignment: .leading, spacing: 5) {
+            Text(quoteEntity.author ?? "").font(.title)
+            Text(quoteEntity.content ?? "").font(.title2).foregroundColor(.gray)
+        }
+        .padding()
     }
 }
 

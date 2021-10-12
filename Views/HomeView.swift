@@ -13,7 +13,8 @@ struct HomeView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(entity: QuoteEntity.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \QuoteEntity.content, ascending: true)], animation: .default) private var coreDataQuotes: FetchedResults<QuoteEntity>
+    @FetchRequest(entity: QuoteEntity.entity(), sortDescriptors: [], animation: .default)
+    private var coreDataQuotes: FetchedResults<QuoteEntity>
     
     var body: some View {
         NavigationView {
@@ -37,13 +38,13 @@ struct HomeView: View {
                 } else if !coreDataQuotes.isEmpty && qvm.quotes.isEmpty {
                     
                     List {
-                        ForEach(coreDataQuotes) { quote in
+                        ForEach(coreDataQuotes) { quoteEntity in
                             NavigationLink {
-                                DetailView2()
+                                DetailView2(quoteEntity: quoteEntity)
                             } label: {
                                 VStack(alignment: .leading, spacing: 5) {
-                                    Text(quote.author ?? "").font(.headline)
-                                    Text(quote.content ?? "").font(.subheadline).foregroundColor(.gray)
+                                    Text(quoteEntity.author ?? "").font(.headline)
+                                    Text(quoteEntity.content ?? "").font(.subheadline).foregroundColor(.gray)
                                 }
                             }
                         }
